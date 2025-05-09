@@ -1,15 +1,16 @@
 <script setup>
-import baseLayout from './BaseLayout.vue';
+import AppBar from '../shared/AppBar.vue';
+import NavBar from '../shared/NavBar.vue';
 </script>
 
 <template>
-  <base-layout>
+  <div class="max-w-md mx-auto h-screen">
     <div class="flex flex-col justify-between items-center w-full h-full">
-      <header></header>
-      <main class="self-stretch flex-grow overflow-y-auto">
+      <AppBar :back="false" />
+      <main class="self-stretch flex-grow overflow-y-auto p-2">
         <router-view />
       </main>
-      <footer></footer>
+      <NavBar />
     </div>
-  </base-layout>
+  </div>
 </template>
