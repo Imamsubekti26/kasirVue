@@ -9,8 +9,10 @@ export const useGetProductStore = defineStore('getProduct', () => {
   const loading = ref(false);
   const error = ref(null);
 
-  const fetchAllProduct = async () => {
+  const fetchAllProduct = async (force = false) => {
     if (loading.value) return;
+
+    if (!force && products.value.length) return; // caching
 
     loading.value = true;
     error.value = null;

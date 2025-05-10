@@ -4,19 +4,14 @@ import IconButton from '@/components/shared/button/IconButton.vue';
 import CheckoutCard from '@/components/shared/card/CheckoutCard.vue';
 import PaymentForm from '@/components/shared/form/PaymentForm.vue';
 import CustomInput from '@/components/shared/input/CustomInput.vue';
+import { useCartStore } from '@/stores/cart/cartStore';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const cartStore = useCartStore();
 
 const table = ref('');
-const orders = ref([
-  {
-    name: 'Bakwan',
-    price: 5000,
-    amount: 2
-  }
-]);
 </script>
 
 <template>
@@ -25,10 +20,10 @@ const orders = ref([
     <CustomButton @click="router.push({ name: 'menu' })">Daftar Menu</CustomButton>
   </div>
 
-  <CheckoutCard v-for="order in orders" :key="order" :title="order.name" :price="(parseInt(order.price) * parseInt(order.amount)).toString()">
-    <IconButton icon="/icons/ic_minus.svg" />
+  <CheckoutCard v-for="order in cartStore.products" :key="order" :title="order.name" :price="(parseInt(order.price) * parseInt(order.amount)).toString()">
+    <IconButton icon="/icons/ic_minus.svg" @click="cartStore.dettach(order)" />
     <p class="px-2">{{ order.amount }}</p>
-    <IconButton icon="/icons/ic_plus.svg" />
+    <IconButton icon="/icons/ic_plus.svg" @click="cartStore.attach(order)" />
   </CheckoutCard>
 
   <PaymentForm />

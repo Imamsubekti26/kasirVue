@@ -2,7 +2,7 @@
 import { db, storage } from '../firebase';
 import { collection, doc, getDocs, addDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { getFormattedDateToday } from '$lib/helpers/dateFormatter';
+import { getFormattedDateToday } from '../../helpers/dateFormatter';
 
 export async function getAllProduct(user_id) {
   try {

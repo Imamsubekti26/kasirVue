@@ -1,17 +1,27 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onBeforeUnmount } from 'vue';
 import SelectInput from '../input/SelectInput.vue';
 import CustomInput from '../input/CustomInput.vue';
 import CustomButton from '../button/CustomButton.vue';
+import { useCartStore } from '@/stores/cart/cartStore';
 
-const total = ref(0);
+const cartStore = useCartStore();
+
 const money = ref(0);
-const paymentMethod = ref('tunai');
-const cashback = computed(() => total.value - money.value);
-const listOfPaymentMethod = ref([]);
+const paymentMethod = ref('cash');
+const cashback = computed(() => money.value - cartStore.grandTotal);
+const listOfPaymentMethod = ref([
+  { id: 'cash', text: 'Tunai' },
+  { id: 'qris', text: 'QRIS' },
+  { id: 'non-cash', text: 'Non-tunai lain' },
+]);
 
 const handleSave = async () => {};
 const handleProcess = async () => {};
+
+onBeforeUnmount(() => {
+  cartStore.reset();
+});
 </script>
 
 <template>
@@ -19,14 +29,14 @@ const handleProcess = async () => {};
     <div class="w-full bg-white dark:bg-slate-800 border-t-2 border-gray-50 dark:border-gray-800 rounded-3xl py-4 pb-8 px-6">
       <div class="flex justify-between text-sm">
         <p>Total:</p>
-        <p class="font-semibold">Rp. {{ total }}</p>
+        <p class="font-semibold">Rp. {{ cartStore.grandTotal }}</p>
       </div>
       <div class="py-4 flex flex-col gap-2">
         <div class="flex gap-2">
-          <SelectInput label="Metode Pembayaran" :options="{ listOfPaymentMethod }" v-model="paymentMethod" />
-          <CustomInput v-if="paymentMethod === 'tunai'" type="number" label="Jumlah Uang" placeholder="Rp." v-model="money" />
+          <SelectInput label="Metode Pembayaran" :options="listOfPaymentMethod" v-model="paymentMethod" />
+          <CustomInput v-if="paymentMethod === 'cash'" type="number" label="Jumlah Uang" placeholder="Rp." v-model="money" />
         </div>
-        <div v-if="paymentMethod === 'tunai'" class="flex justify-between text-sm">
+        <div v-if="paymentMethod === 'cash'" class="flex justify-between text-sm">
           <p>Kembalian:</p>
           <p class="font-semibold">Rp. {{ cashback }}</p>
         </div>
