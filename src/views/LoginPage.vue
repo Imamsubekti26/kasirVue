@@ -1,25 +1,27 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import CustomInput from '@/components/shared/input/CustomInput.vue';
 import CustomButton from '@/components/shared/button/CustomButton.vue';
 import { RouterLink } from 'vue-router';
+import { useAuthStore } from '@/stores/auth/authStore.js';
 
 const router = useRouter();
+const authStore = useAuthStore();
 
 const email = ref('');
 const password = ref('');
 const remember = ref(false);
-const isLoading = ref(false);
+const isLoading = computed(() => authStore.loading);
 
 const handleSubmit = async () => {
-  isLoading.value = true;
+  await authStore.signIn(email.value, password.value, remember.value);
 
-  // TODO: implementasi fetch login di sini
-
-  router.push({ name: 'dashboard' });
-
-  isLoading.value = false;
+  if (!authStore.error) {
+    router.push({ name: 'dashboard' });
+  } else {
+    alert(authStore.error);
+  }
 };
 </script>
 

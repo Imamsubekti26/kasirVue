@@ -2,7 +2,12 @@
 import CustomButton from '@/components/shared/button/CustomButton.vue';
 import CustomInput from '@/components/shared/input/CustomInput.vue';
 import SelectInput from '@/components/shared/input/SelectInput.vue';
+import { useAuthStore } from '@/stores/auth/authStore';
 import { ref, watch, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const authStore = useAuthStore();
 
 const disabled = ref(true);
 const isLoading = ref(false);
@@ -40,7 +45,15 @@ const refreshProfile = () => {
   };
 };
 
-const logout = async () => {};
+const logout = async () => {
+  await authStore.signOut();
+
+  if (!authStore.error) {
+    router.push({ name: 'login' });
+  } else {
+    alert(authStore.error);
+  }
+};
 
 const saveProfile = async () => {};
 

@@ -12,6 +12,8 @@ import ReportPage from '@/views/ReportPage.vue';
 import SettingsPage from '@/views/SettingsPage.vue';
 import { isLoggedIn } from '@/lib/helpers/session';
 import { createRouter, createWebHistory } from 'vue-router';
+import Cookies from 'js-cookie';
+import { logout } from '@/lib/firebase/services/userService';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -60,6 +62,9 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   if (to.meta.requiresAuth && !isLoggedIn()) {
+    Cookies.remove('isLogin');
+    Cookies.remove('jwtToken');
+    logout();
     // return { name: 'login' };
   }
   if (!to.meta.requiresAuth && isLoggedIn()) {

@@ -1,10 +1,8 @@
+import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 
 export function isLoggedIn() {
-  const cookieName = 'isLogin';
-  const findCookie = document.cookie.match(new RegExp(`(?:^|; )${cookieName}=(.+?)(?:;|$)`));
-  const cookieValue = findCookie ? findCookie[1] : undefined;
-  return cookieValue ? true : false;
+  return Cookies.get('isLogin') ? true : false;
 }
 
 export function getUserId(jwtToken) {

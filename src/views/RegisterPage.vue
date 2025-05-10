@@ -1,25 +1,32 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import CustomInput from '@/components/shared/input/CustomInput.vue';
 import CustomButton from '@/components/shared/button/CustomButton.vue';
 import { RouterLink } from 'vue-router';
+import { useAuthStore } from '@/stores/auth/authStore';
 
 const router = useRouter();
+const authStore = useAuthStore();
 
 const email = ref('');
 const password = ref('');
 const passwordConfirm = ref('');
-const isLoading = ref(false);
+const isLoading = computed(() => authStore.loading);
 
 const handleSubmit = async () => {
-  isLoading.value = true;
+  if (password.value !== passwordConfirm.value) {
+    alert('Password tidak sama, coba lagi');
+    return;
+  }
 
-  // TODO: implementasi fetch login di sini
+  await authStore.signUp(email.value, password.value);
 
-  router.push({ name: 'login' });
-
-  isLoading.value = false;
+  if (authStore.error) {
+    alert(authStore.error);
+  } else {
+    router.push({ name: 'login' });
+  }
 };
 </script>
 
