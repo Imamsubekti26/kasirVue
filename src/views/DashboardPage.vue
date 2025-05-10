@@ -26,7 +26,7 @@ const changeActiveTab = (tab) => {
 </script>
 
 <template>
-  <div class="sticky top-0 pb-2 z-10 px-6 pt-4 bg-white dark:bg-slate-800">
+  <div class="sticky top-0 pb-2 z-10 px-6 pt-4 bg-white dark:bg-slate-900">
     <h2 class="mb-2">Transaksi Hari ini:</h2>
     <div class="flex justify-between gap-4">
       <div class="rounded-lg px-4 py-3 flex-grow bg-blue-400 text-white dark:text-black">
