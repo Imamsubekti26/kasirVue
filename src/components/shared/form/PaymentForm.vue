@@ -31,7 +31,7 @@ const handleProcess = async () => {};
           <p class="font-semibold">Rp. {{ cashback }}</p>
         </div>
         <div class="flex gap-4 mt-2">
-          <CustomButton styleType="outline" @click="handleSave">Simpan</CustomButton>
+          <CustomButton styleType="outline" @click="handleSave">Tunda</CustomButton>
           <CustomButton @click="handleProcess">Proses</CustomButton>
         </div>
       </div>
