@@ -20,7 +20,7 @@ const looks = computed(() => {
     case 'outline':
       return 'text-blue-400 bg-white border border-blue-400';
     case 'danger':
-      return 'text-red-400 bg-white border border-red-400';
+      return 'text-red-400 border border-red-400';
     default:
       return 'text-white bg-blue-400';
   }
