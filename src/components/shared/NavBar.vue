@@ -28,7 +28,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex justify-between items-end border-t py-2 px-6 h-[70px] self-stretch flex-grow-0 flex-shrink-0 sticky bottom-0 z-10 bg-white">
+  <div class="flex justify-between items-end border-t border-slate-200 dark:border-slate-900 py-2 px-6 h-[70px] self-stretch flex-grow-0 flex-shrink-0 sticky bottom-0 z-10 bg-white dark:bg-slate-800">
     <template v-for="menu in menuList" :key="menu.id">
       <button
         v-if="menu.id !== 'order'"
@@ -36,14 +36,14 @@ onMounted(() => {
         @click="changeMenu(menu, menu.id)"
       >
         <img :src="activeTab === menu.id ? menu.iconActive : menu.icon" alt="" class="w-8 h-8" />
-        <p class="text-xs text-blue-400">{{ menu.title }}</p>
+        <p class="text-xs text-black dark:text-white" :class="{ 'text-blue-400' : activeTab === menu.id }">{{ menu.title }}</p>
       </button>
 
       <button v-else class="flex flex-col items-center" @click="changeMenu(menu, menu.id)">
         <div class="bg-blue-400 rounded-full p-2">
           <img :src="menu.icon" alt="" class="w-12 h-12" />
         </div>
-        <p class="text-xs text-black w-20">{{ menu.title }}</p>
+        <p class="text-xs text-black dark:text-white w-20">{{ menu.title }}</p>
       </button>
     </template>
   </div>

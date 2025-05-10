@@ -15,13 +15,13 @@ const goBack = () => {
 </script>
 
 <template>
-<header class="flex justify-between items-center w-full px-6 py-4 bg-white h-16 border-b">
+<header class="flex justify-between items-center w-full px-6 py-4 bg-white dark:bg-slate-800 h-16 border-b border-slate-200 dark:border-slate-900">
   <div class="w-6">
     <div v-if="back" @click="goBack">
       <BackIcon />
     </div>
   </div>
-  <h1 class="text-center text-black font-bold">{{ route.name.toUpperCase() }}</h1>
+  <h1 class="text-center text-black dark:text-white font-bold">{{ route.name.toUpperCase() }}</h1>
   <div class="w-6"></div>
 </header>
 </template>
