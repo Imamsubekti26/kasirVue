@@ -19,7 +19,7 @@ defineProps({
   <div class="flex flex-col w-full gap-1">
     <label v-if="label" class="text-xs text-left">{{ label }}</label>
     <div class="flex justify-start items-center h-12 px-3 py-2 rounded-lg border border-gray-400 gap-2">
-      <input :type="type" :placeholder="placeholder" :disabled="disabled" class="text-sm w-full focus:outline-none bg-transparent" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" />
+      <input :type="type" :placeholder="placeholder" :disabled="disabled" class="text-sm w-full focus:outline-none bg-transparent text-black dark:text-white" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" />
     </div>
   </div>
 </template>

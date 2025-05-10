@@ -4,7 +4,7 @@ import IconButton from '@/components/shared/button/IconButton.vue';
 import MenuCard from '@/components/shared/card/MenuCard.vue';
 import CustomInput from '@/components/shared/input/CustomInput.vue';
 import SelectInput from '@/components/shared/input/SelectInput.vue';
-import MenuForm from '@/components/shared/MenuForm.vue';
+import MenuForm from '@/components/shared/form/MenuForm.vue';
 import { ref } from 'vue';
 
 const categorySelected = ref('all');

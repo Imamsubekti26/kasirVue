@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue';
-import CustomInput from './input/CustomInput.vue';
-import CustomButton from './button/CustomButton.vue';
-import FileInput from './input/FileInput.vue';
-import SelectInput from './input/SelectInput.vue';
+import CustomInput from '../input/CustomInput.vue';
+import CustomButton from '../button/CustomButton.vue';
+import FileInput from '../input/FileInput.vue';
+import SelectInput from '../input/SelectInput.vue';
 
 const props = defineProps({
   product: Object

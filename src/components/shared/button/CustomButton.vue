@@ -18,7 +18,7 @@ defineEmits(['click']);
 const looks = computed(() => {
   switch (props.styleType) {
     case 'outline':
-      return 'text-blue-400 bg-white border border-blue-400';
+      return 'text-blue-400 border border-blue-400';
     case 'danger':
       return 'text-red-400 border border-red-400';
     default:
