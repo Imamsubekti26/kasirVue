@@ -28,11 +28,9 @@ const filteredProducts = ref([
 
 <template>
   <div>
-    <div class="sticky top-0 z-10">
-      <div class="flex gap-2 pt-4 pb-6 px-4">
-        <SelectInput v-model="selectedCategory" />
-        <CustomInput type="search" placeholder="cari produk..." v-model="searchValue" />
-      </div>
+    <div class="sticky top-0 flex gap-2 pt-6 pb-6 px-4 z-10 bg-white dark:bg-slate-900">
+      <SelectInput v-model="selectedCategory" />
+      <CustomInput type="search" placeholder="cari produk..." v-model="searchValue" />
     </div>
     <MenuCard v-for="product in filteredProducts" :key="product.id" :product="product">
       <IconButton icon="/icons/ic_minus.svg" />

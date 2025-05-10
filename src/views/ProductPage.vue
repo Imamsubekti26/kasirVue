@@ -48,7 +48,7 @@ const deleteProduct = async (productId) => {
 </script>
 
 <template>
-  <div class="sticky top-0 flex gap-2 pt-4 pb-6 px-4 z-10">
+  <div class="sticky top-0 flex gap-2 pt-6 pb-6 px-4 z-10 bg-white dark:bg-slate-900">
     <SelectInput v-model="categorySelected" />
     <CustomInput type="search" placeholder="cari produk..." v-model="searchValue" />
   </div>

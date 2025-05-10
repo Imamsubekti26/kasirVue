@@ -26,7 +26,7 @@ const changeActiveTab = (tab) => {
 </script>
 
 <template>
-  <div class="sticky top-0 pb-2 z-10 px-6 pt-2">
+  <div class="sticky top-0 pb-2 z-10 px-6 pt-4 bg-white dark:bg-slate-800">
     <h2 class="mb-2">Transaksi Hari ini:</h2>
     <div class="flex justify-between gap-4">
       <div class="rounded-lg px-4 py-3 flex-grow bg-blue-400 text-white dark:text-black">
@@ -65,9 +65,8 @@ const changeActiveTab = (tab) => {
         </li>
       </ul>
     </div>
-
-    <div class="flex flex-col gap-1 mt-4 w-full">
-      <OrderCard v-for="item in transactions" :key="item.id" :id="item.id" :title="`Meja no.${item.label}`" :time="item.order_date.seconds" :price="item.money" />
-    </div>
+  </div>
+  <div class="flex flex-col gap-1 mt-4 w-full px-4">
+    <OrderCard v-for="item in transactions" :key="item.id" :id="item.id" :title="`Meja no.${item.label}`" :time="item.order_date.seconds" :price="item.money" />
   </div>
 </template>

@@ -8,7 +8,7 @@ defineProps({
   type: {
     type: String,
     default: 'text',
-    validator: (val) => ['text', 'number', 'password', 'search', 'date', 'time'].includes(val)
+    validator: (val) => ['text', 'number', 'password', 'search', 'date', 'time', 'week', 'month', 'year'].includes(val)
   },
   placeholder: String,
   disabled: Boolean

@@ -42,7 +42,7 @@ const handleSubmit = () => {
 
 <template>
   <div class="absolute bottom-0 right-0 left-0 mx-auto max-w-md z-20 flex justify-center">
-    <div class="w-full bg-white dark:bg-slate-800 border-t-2 border-gray-50 dark:border-gray-800 rounded-3xl py-4 pb-8 px-6">
+    <div class="w-full bg-white dark:bg-slate-800 border-t-2 border-gray-100 shadow-2xl dark:border-gray-800 rounded-3xl py-4 pb-8 px-6">
       <div class="flex justify-between">
         <h2 class="font-medium mb-6">{{ id ? 'Edit Menu' : 'Tambah Menu' }}</h2>
         <img src="/icons/ic_close.svg" alt="" class="h-6" @click="emit('close')" />
