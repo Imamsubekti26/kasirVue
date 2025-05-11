@@ -47,11 +47,11 @@ export async function detailOrder(user_id, history_id) {
   }
 }
 
-export async function getOrderHistory(user_id, date) {
+export async function getOrderHistory(user_id, startDate = null, endDate = null) {
   try {
-    const startOfDay = new Date(date);
+    const startOfDay = startDate ? new Date(startDate) : new Date();
     startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(date);
+    const endOfDay = endDate ? new Date(endDate) : new Date();
     endOfDay.setHours(23, 59, 59, 999);
 
     const historiesCol = collection(db, 'users', user_id, 'histories');

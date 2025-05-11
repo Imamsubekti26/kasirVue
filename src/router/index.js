@@ -32,14 +32,17 @@ const router = createRouter({
           ]
         },
         {
-          path: 'order/bill',
+          path: 'bill/:order_id',
           component: BaseLayout,
           children: [{ path: '', name: 'bill', component: BillPage }]
         },
         {
           path: 'order',
           component: OrderLayout,
-          children: [{ path: '', name: 'order', component: OrderPage }]
+          children: [
+            { path: '', name: 'order', component: OrderPage },
+            { path: ':order_id', name: 'order_detail', component: OrderPage }
+          ]
         }
       ]
     },

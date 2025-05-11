@@ -15,6 +15,9 @@ const props = defineProps({
   price: {
     type: Number,
     default: 0
+  },
+  done: {
+    type: Object
   }
 });
 
@@ -32,7 +35,11 @@ const router = useRouter();
 
 // Click handler sementara hanya navigasi
 const handleClick = () => {
-  router.push({ name: 'order' }); // ganti nanti jika perlu kondisi
+  if (props.done) {
+    router.push({ name: 'bill', params: { order_id: props.id } });
+  } else {
+    router.push({ name: 'order_detail', params: { order_id: props.id } });
+  }
 };
 </script>
 

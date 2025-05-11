@@ -1,28 +1,31 @@
 <script setup>
 import OrderCard from '@/components/shared/card/OrderCard.vue';
-import { ref } from 'vue';
+import { useOrderStore } from '@/stores/order/orderStore';
+import { ref, onMounted, computed } from 'vue';
 
-const totalData = ref(0);
-const totalBalance = ref(0);
+const orderStore = useOrderStore();
+
+const totalData = computed(() => orderStore.orders.length);
+const totalBalance = computed(() => orderStore.orders.reduce((sum, item) => sum + item.total, 0));
 const activeTab = ref('pending'); // [done, pending]
-const transactions = ref([
-  {
-    id: 'robh6mCnfCYD5tBoDKvG',
-    label: 1,
-    total: 6000,
-    money: 6000,
-    method: 'qris',
-    order_date: {
-      seconds: 1746840299,
-      nanoseconds: 545000000
-    },
-    finish_date: null
-  }
-]);
+const transactions = computed(() => {
+  return orderStore.orders.filter((o) => (activeTab.value === 'pending' ? o.finish_date === null : o.finish_date !== null));
+});
 
 const changeActiveTab = (tab) => {
   activeTab.value = tab;
 };
+
+const fetchTodayOrders = async () => {
+  await orderStore.fetchTodayOrder(true);
+  if (orderStore.get.error) {
+    alert(orderStore.get.error);
+  }
+};
+
+onMounted(async () => {
+  await fetchTodayOrders();
+});
 </script>
 
 <template>
@@ -66,7 +69,24 @@ const changeActiveTab = (tab) => {
       </ul>
     </div>
   </div>
+
+  <div v-if="orderStore.get.loading && !orderStore.orders.length" class="flex flex-col gap-4 justify-center items-center mt-4">
+    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-black dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+    </svg>
+    <p>Loading</p>
+  </div>
+
+  <div v-else-if="orderStore.get.loading && orderStore.orders.length" class="flex justify-center">
+    <svg class="animate-spin m-1 h-3 w-3 text-black dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+    </svg>
+    <p class="text-sm">Singkronisasi...</p>
+  </div>
+
   <div class="flex flex-col gap-1 mt-4 w-full px-4">
-    <OrderCard v-for="item in transactions" :key="item.id" :id="item.id" :title="`Meja no.${item.label}`" :time="item.order_date.seconds" :price="item.money" />
+    <OrderCard v-for="item in transactions" :key="item.id" :id="item.id" :title="`Meja no.${item.label}`" :time="item.order_date.seconds" :price="item.total" :done="item.finish_date || null" />
   </div>
 </template>
