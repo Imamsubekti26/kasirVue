@@ -4,7 +4,6 @@ import OrderLayout from '@/components/layout/OrderLayout.vue';
 import BillPage from '@/views/BillPage.vue';
 import DashboardPage from '@/views/DashboardPage.vue';
 import LoginPage from '@/views/LoginPage.vue';
-import MenuPage from '@/views/MenuPage.vue';
 import OrderPage from '@/views/OrderPage.vue';
 import ProductPage from '@/views/ProductPage.vue';
 import RegisterPage from '@/views/RegisterPage.vue';
@@ -40,11 +39,8 @@ const router = createRouter({
         {
           path: 'order',
           component: OrderLayout,
-          children: [
-            { path: '', name: 'order', component: OrderPage },
-            { path: 'menu', name: 'menu', component: MenuPage }
-          ]
-        },
+          children: [{ path: '', name: 'order', component: OrderPage }]
+        }
       ]
     },
     {

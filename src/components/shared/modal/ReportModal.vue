@@ -19,7 +19,7 @@ const transactions = ref([
 </script>
 
 <template>
-  <div class="sticky top-0 pb-2 z-10 px-4 pt-2 bg-white dark:bg-slate-800">
+  <div class="sticky top-0 pb-2 z-10 px-4 pt-2 bg-white dark:bg-slate-900">
     <div class="text-center">
       <h4 class="text-sm">Tanggal</h4>
       <h2 class="">20 Mei 2025 - 20 Juni 2025</h2>

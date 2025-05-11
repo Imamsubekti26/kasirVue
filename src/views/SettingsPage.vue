@@ -3,30 +3,25 @@ import CustomButton from '@/components/shared/button/CustomButton.vue';
 import CustomInput from '@/components/shared/input/CustomInput.vue';
 import SelectInput from '@/components/shared/input/SelectInput.vue';
 import { useAuthStore } from '@/stores/auth/authStore';
+import { useProfileStore } from '@/stores/profile/profileStore';
+import { computed } from 'vue';
 import { ref, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const profileStore = useProfileStore();
 
 const disabled = ref(true);
 const isLoading = ref(false);
-const userInfo = ref({
-  name: '',
-  address: '',
-  email: '',
-  phone: '',
-  openTime: '',
-  closeTime: '',
-  instagram: ''
-});
+const userInfo = computed(() => profileStore.profile);
 const editedInfo = ref({
   name: '',
   address: '',
   email: '',
   phone: '',
-  openTime: '',
-  closeTime: '',
+  open_time: '',
+  close_time: '',
   instagram: ''
 });
 
@@ -39,8 +34,8 @@ const refreshProfile = () => {
     address: userInfo.value.address,
     email: userInfo.value.email,
     phone: userInfo.value.phone,
-    openTime: userInfo.value.openTime,
-    closeTime: userInfo.value.closeTime,
+    open_time: userInfo.value.open_time,
+    close_time: userInfo.value.close_time,
     instagram: userInfo.value.valueinstagram
   };
 };
@@ -55,6 +50,13 @@ const logout = async () => {
   }
 };
 
+const getProfile = async () => {
+  await profileStore.fetchUser();
+  if (profileStore.error) {
+    alert(profileStore.error);
+  }
+};
+
 const saveProfile = async () => {};
 
 const cancelSave = async () => {
@@ -66,7 +68,10 @@ watch(
   () => userInfo.value,
   () => refreshProfile()
 );
-onMounted(() => refreshProfile());
+onMounted(async () => {
+  await getProfile();
+  refreshProfile();
+});
 </script>
 
 <template>
@@ -94,14 +99,23 @@ onMounted(() => refreshProfile());
     </div>
 
     <h2 class="mb-4 mt-4">Pengaturan Toko:</h2>
-    <div class="flex flex-col gap-4">
+
+    <div v-if="profileStore.get.loading" class="flex flex-col gap-4 justify-center items-center">
+      <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-black dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+      </svg>
+      <p>Loading</p>
+    </div>
+
+    <div v-else class="flex flex-col gap-4">
       <CustomInput label="Nama Toko" :disabled="disabled" v-model="editedInfo.name" />
       <CustomInput label="Alamat Toko" :disabled="disabled" v-model="editedInfo.address" />
       <CustomInput label="Email" :disabled="true" v-model="editedInfo.email" />
       <CustomInput label="Nomor Telepon" :disabled="disabled" v-model="editedInfo.phone" />
       <div class="flex gap-4">
-        <CustomInput type="time" label="Jam Operasional" :disabled="disabled" v-model="editedInfo.openTime" />
-        <CustomInput type="time" label="Sampai Jam" :disabled="disabled" v-model="editedInfo.closeTime" />
+        <CustomInput type="time" label="Jam Operasional" :disabled="disabled" v-model="editedInfo.open_time" />
+        <CustomInput type="time" label="Sampai Jam" :disabled="disabled" v-model="editedInfo.close_time" />
       </div>
       <CustomInput label="Media Sosial (instagram)" placeholder="@instagram" :disabled="disabled" v-model="editedInfo.instagram" />
 
