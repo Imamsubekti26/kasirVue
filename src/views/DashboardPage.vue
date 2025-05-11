@@ -1,19 +1,20 @@
 <script setup>
 import OrderCard from '@/components/shared/card/OrderCard.vue';
+import { useGlobalStore } from '@/stores/globalStore';
 import { useOrderStore } from '@/stores/order/orderStore';
-import { ref, onMounted, computed } from 'vue';
+import { onMounted, computed } from 'vue';
 
+const globalStore = useGlobalStore();
 const orderStore = useOrderStore();
 
 const totalData = computed(() => orderStore.orders.length);
 const totalBalance = computed(() => orderStore.orders.reduce((sum, item) => sum + item.total, 0));
-const activeTab = ref('pending'); // [done, pending]
 const transactions = computed(() => {
-  return orderStore.orders.filter((o) => (activeTab.value === 'pending' ? o.finish_date === null : o.finish_date !== null));
+  return orderStore.orders.filter((o) => (globalStore.dashboard.activeTab === 'pending' ? o.finish_date === null : o.finish_date !== null));
 });
 
 const changeActiveTab = (tab) => {
-  activeTab.value = tab;
+  globalStore.dashboard.activeTab = tab;
 };
 
 const fetchTodayOrders = async () => {
@@ -48,8 +49,8 @@ onMounted(async () => {
           <p
             class="block p-3 border-b-2 rounded-t-lg"
             :class="{
-              'active border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-500 hover:text-blue-700 hover:border-blue-300 dark:hover:text-blue-600': activeTab === 'pending',
-              'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-700 hover:border-gray-300 dark:hover:text-gray-300': activeTab !== 'pending'
+              'active border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-500 hover:text-blue-700 hover:border-blue-300 dark:hover:text-blue-600': globalStore.dashboard.activeTab === 'pending',
+              'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-700 hover:border-gray-300 dark:hover:text-gray-300': globalStore.dashboard.activeTab !== 'pending'
             }"
           >
             Belum Bayar
@@ -59,8 +60,8 @@ onMounted(async () => {
           <p
             class="block p-3 border-b-2 rounded-t-lg"
             :class="{
-              'active border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-500 hover:text-blue-700 hover:border-blue-300 dark:hover:text-blue-600': activeTab === 'done',
-              'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-700 hover:border-gray-300 dark:hover:text-gray-300': activeTab !== 'done'
+              'active border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-500 hover:text-blue-700 hover:border-blue-300 dark:hover:text-blue-600': globalStore.dashboard.activeTab === 'done',
+              'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-700 hover:border-gray-300 dark:hover:text-gray-300': globalStore.dashboard.activeTab !== 'done'
             }"
           >
             Transaksi Selesai
