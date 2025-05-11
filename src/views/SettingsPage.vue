@@ -13,7 +13,6 @@ const authStore = useAuthStore();
 const profileStore = useProfileStore();
 
 const disabled = ref(true);
-const isLoading = ref(false);
 const userInfo = computed(() => profileStore.profile);
 const editedInfo = ref({
   name: '',
@@ -36,7 +35,7 @@ const refreshProfile = () => {
     phone: userInfo.value.phone,
     open_time: userInfo.value.open_time,
     close_time: userInfo.value.close_time,
-    instagram: userInfo.value.valueinstagram
+    instagram: userInfo.value.instagram
   };
 };
 
@@ -57,7 +56,21 @@ const getProfile = async () => {
   }
 };
 
-const saveProfile = async () => {};
+const saveProfile = async () => {
+  await profileStore.editProfile(editedInfo.value);
+  if (profileStore.update.error) {
+    alert(profileStore.update.error);
+    return;
+  }
+
+  await profileStore.fetchUser(true);
+  if (profileStore.get.error) {
+    alert(profileStore.get.error);
+    return;
+  }
+
+  disabled.value = true;
+};
 
 const cancelSave = async () => {
   disabled.value = true;
@@ -68,6 +81,7 @@ watch(
   () => userInfo.value,
   () => refreshProfile()
 );
+
 onMounted(async () => {
   await getProfile();
   refreshProfile();
@@ -124,7 +138,7 @@ onMounted(async () => {
         <CustomButton styleType="danger" @click="logout">Log Out</CustomButton>
       </template>
       <div v-else class="flex gap-4">
-        <CustomButton @click="saveProfile" :isLoading="isLoading">Simpan Perubahan</CustomButton>
+        <CustomButton @click="saveProfile" :isLoading="profileStore.update.loading">Simpan Perubahan</CustomButton>
         <CustomButton styleType="danger" @click="cancelSave">Batal</CustomButton>
       </div>
     </div>
