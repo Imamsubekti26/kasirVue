@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
-import { getAllProduct, updateProduct } from '@/lib/firebase/services/productService';
+import { updateProduct } from '@/lib/firebase/services/productService';
 import Cookies from 'js-cookie';
 import { getUserId } from '@/lib/helpers/session';
 

@@ -4,12 +4,15 @@ import CustomInput from '../input/CustomInput.vue';
 import CustomButton from '../button/CustomButton.vue';
 import FileInput from '../input/FileInput.vue';
 import SelectInput from '../input/SelectInput.vue';
+import { useProductStore } from '@/stores/product/productStore';
 
 const props = defineProps({
   product: Object
 });
 
-const emit = defineEmits(['afterSubmit', 'close']);
+const emit = defineEmits(['close']);
+
+const productStore = useProductStore();
 
 const isLoading = ref(false);
 const id = ref(props.product?.id || '');
@@ -23,20 +26,36 @@ const categoryList = ref([
   { id: 'snack', text: 'Camilan' }
 ]);
 
-const handleSubmit = () => {
+const resetForm = () => {
+  id.value = '';
+  name.value = '';
+  category.value = '';
+  price.value = '';
+  file.value = null;
+};
+
+const handleSubmit = async () => {
   isLoading.value = true;
-  console.log({
+
+  const payload = {
     id: id.value,
     name: name.value,
     category: category.value,
-    price: price.value,
-    file: file.value
-  });
+    price: price.value
+  };
 
-  setTimeout(() => {
-    emit('afterSubmit');
+  const res = props.product != undefined ? await productStore.editProduct(payload, file.value) : await productStore.newProduct(payload, file.value);
+  if (res.error) {
+    alert(res.error);
     isLoading.value = false;
-  }, 1000);
+    return;
+  }
+
+  emit('close');
+  resetForm();
+  await productStore.fetchAllProduct(true);
+
+  isLoading.value = false;
 };
 </script>
 

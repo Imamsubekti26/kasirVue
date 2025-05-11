@@ -25,6 +25,7 @@ export async function addProduct(user_id, product, image) {
       product.image = await getDownloadURL(snapshot.ref);
     }
 
+    delete product.id;
     const productsCol = collection(db, 'users', user_id, 'products');
     const docRef = await addDoc(productsCol, product);
     return { error: false, message: 'add product successfully', data: { id: docRef.id, ...product } };
@@ -63,7 +64,18 @@ export async function deleteProduct(user_id, product_id) {
   }
 }
 
-function getBinaryFileOf(image) {
-  const base64Data = image.split(',')[1];
-  return Buffer.from(base64Data, 'base64');
+function getBinaryFileOf(base64Image) {
+  const base64Data = base64Image.split(',')[1];
+  const mimeType = base64Image.match(/data:(.*);base64/)[1];
+
+  const byteCharacters = atob(base64Data);
+  const byteNumbers = new Array(byteCharacters.length);
+
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+
+  const byteArray = new Uint8Array(byteNumbers);
+
+  return new Blob([byteArray], { type: mimeType });
 }

@@ -35,7 +35,18 @@ const closeModal = () => {
 };
 
 const deleteProduct = async (productId) => {
-  // do
+  if (!confirm('Apakah anda yakin ingin menghapus produk ini?')) return;
+
+  await productStore.removeProduct(productId);
+  if (productStore.delete.error) {
+    alert(productStore.delete.error);
+    return;
+  }
+
+  await productStore.fetchAllProduct(true);
+  if (productStore.get.error) {
+    alert(productStore.get.error);
+  }
 };
 
 const fetchProduct = async () => {
@@ -72,5 +83,5 @@ onMounted(async () => {
     <CustomButton @click="showModal">Tambah menu baru</CustomButton>
   </div>
 
-  <MenuForm v-if="modalVisible" :product="productInModal" @afterSubmit="console.log(1)" @close="closeModal" />
+  <MenuForm v-if="modalVisible" :product="productInModal" @close="closeModal" />
 </template>
