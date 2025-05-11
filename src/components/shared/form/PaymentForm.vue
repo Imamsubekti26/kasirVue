@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onBeforeUnmount } from 'vue';
+import { ref, computed } from 'vue';
 import SelectInput from '../input/SelectInput.vue';
 import CustomInput from '../input/CustomInput.vue';
 import CustomButton from '../button/CustomButton.vue';
@@ -13,15 +13,11 @@ const cashback = computed(() => money.value - cartStore.grandTotal);
 const listOfPaymentMethod = ref([
   { id: 'cash', text: 'Tunai' },
   { id: 'qris', text: 'QRIS' },
-  { id: 'non-cash', text: 'Non-tunai lain' },
+  { id: 'non-cash', text: 'Non-tunai lain' }
 ]);
 
 const handleSave = async () => {};
 const handleProcess = async () => {};
-
-onBeforeUnmount(() => {
-  cartStore.reset();
-});
 </script>
 
 <template>
