@@ -59,7 +59,7 @@ onBeforeUnmount(() => {
     <IconButton icon="/icons/ic_plus.svg" @click="cartStore.attach(order)" />
   </CheckoutCard>
 
-  <PaymentForm />
+  <PaymentForm :table="parseInt(table)" />
 
   <ModalLayout v-model:visible="isMenuShown">
     <MenuModal />

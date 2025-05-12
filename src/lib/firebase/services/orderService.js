@@ -1,6 +1,6 @@
 // orderService.js
 import { db } from '../firebase';
-import { collection, doc, getDocs, getDoc, addDoc, updateDoc, deleteDoc, query, Timestamp, where } from 'firebase/firestore';
+import { collection, doc, getDocs, getDoc, addDoc, updateDoc, deleteDoc, query, Timestamp, where, setDoc } from 'firebase/firestore';
 
 export async function getHoldedOrder(user_id) {
   const startOfDay = new Date();
@@ -92,26 +92,54 @@ export async function createNewOrder(user_id, orderDetail) {
 
 export async function updateOrder(user_id, history_id, orderDetail) {
   try {
-    console.log(orderDetail);
     const historyRef = doc(db, 'users', user_id, 'histories', history_id);
     await updateDoc(historyRef, {
       label: orderDetail.label,
       total: orderDetail.total,
       money: orderDetail.money,
       method: orderDetail.method,
-      order_date: orderDetail.orderDate,
       finish_date: orderDetail.finishDate
     });
 
     const orderListCol = collection(db, 'users', user_id, 'histories', history_id, 'order_list');
     const existingOrdersSnapshot = await getDocs(orderListCol);
-    const deleteBatch = existingOrdersSnapshot.docs.map((doc) => deleteDoc(doc.ref));
-    await Promise.all(deleteBatch);
 
-    const batch = orderDetail.orderList.map((order) => addDoc(orderListCol, order));
-    await Promise.all(batch);
+    // Buat map dari id produk ke dokumen Firestore
+    const existingOrderMap = new Map();
+    existingOrdersSnapshot.docs.forEach((docSnap) => {
+      const data = docSnap.data();
+      existingOrderMap.set(data.id, { docId: docSnap.id, data: data });
+    });
+
+    const operations = [];
+
+    // Cek mana yang perlu di-update atau ditambahkan
+    for (const order of orderDetail.orderList) {
+      const existing = existingOrderMap.get(order.id);
+      if (existing) {
+        if (existing.data.amount !== order.amount) {
+          // update jika amount berubah
+          const docRef = doc(orderListCol, existing.docId);
+          operations.push(setDoc(docRef, order));
+        }
+        // kalau tidak berubah, tidak usah lakukan apa-apa
+        existingOrderMap.delete(order.id); // tandai sudah diproses
+      } else {
+        // tidak ditemukan di firestore, berarti tambahkan baru
+        operations.push(addDoc(orderListCol, order));
+      }
+    }
+
+    // Sisanya di existingOrderMap adalah data yang harus dihapus
+    for (const { docId } of existingOrderMap.values()) {
+      const docRef = doc(orderListCol, docId);
+      operations.push(deleteDoc(docRef));
+    }
+
+    // Jalankan semua operasi sekaligus
+    await Promise.all(operations);
+
     const result = { id: history_id, ...orderDetail };
-
     return { error: false, message: 'create new order success', data: result };
   } catch (error) {
     console.error('Error updating order:', error);

@@ -1,5 +1,6 @@
 import { createNewOrder } from '@/lib/firebase/services/orderService';
 import { getUserId } from '@/lib/helpers/session';
+import { Timestamp } from 'firebase/firestore';
 import Cookies from 'js-cookie';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
@@ -8,7 +9,7 @@ export const useCreateOrderStore = defineStore('createOrder', () => {
   const loading = ref(false);
   const error = ref(null);
 
-  const newOrder = async (orderDetail) => {
+  const newOrder = async (orderDetail, isFinish = false) => {
     if (loading.value) return;
 
     loading.value = true;
@@ -22,6 +23,9 @@ export const useCreateOrderStore = defineStore('createOrder', () => {
     }
 
     const userId = getUserId(jwtToken);
+    delete orderDetail.id;
+    orderDetail.orderDate = Timestamp.fromDate(new Date());
+    orderDetail.finishDate = isFinish ? Timestamp.fromDate(new Date()) : null;
     const result = await createNewOrder(userId, orderDetail);
 
     error.value = result.error ? result.message : null;

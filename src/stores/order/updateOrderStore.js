@@ -3,12 +3,13 @@ import { defineStore } from 'pinia';
 import Cookies from 'js-cookie';
 import { getUserId } from '@/lib/helpers/session';
 import { updateOrder } from '@/lib/firebase/services/orderService';
+import { Timestamp } from 'firebase/firestore';
 
 export const useUpdateOrderStore = defineStore('updateOrder', () => {
   const loading = ref(false);
   const error = ref(null);
 
-  const editOrder = async (orderDetail) => {
+  const editOrder = async (orderDetail, isFinish = false) => {
     if (loading.value) return;
 
     loading.value = true;
@@ -22,6 +23,7 @@ export const useUpdateOrderStore = defineStore('updateOrder', () => {
     }
 
     const userId = getUserId(jwtToken);
+    orderDetail.finishDate = isFinish ? Timestamp.fromDate(new Date()) : null;
     const result = await updateOrder(userId, orderDetail.id, orderDetail);
 
     error.value = result.error ? result.message : null;
