@@ -31,6 +31,17 @@ const handleSave = async (isFinish = false) => {
     return;
   }
 
+  if (!cartStore.products.length) {
+    if (!confirm('Tidak ada item di dalam keranjang, hapus transaksi?')) return;
+
+    if (route.params.order_id) {
+      // hapus dari firestore
+    }
+
+    window.history.back();
+    return;
+  }
+
   const payload = {
     id: route.params.order_id || '',
     label: props.table || 0,
@@ -41,7 +52,7 @@ const handleSave = async (isFinish = false) => {
   };
 
   const result = route.params.order_id ? await orderStore.editOrder(payload, isFinish) : await orderStore.newOrder(payload, isFinish);
-  const error = orderStore.create.error || orderStore.update.error
+  const error = orderStore.create.error || orderStore.update.error;
   if (error) {
     alert(error);
     return;

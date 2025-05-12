@@ -15,9 +15,9 @@ const props = defineProps({
 
 const orderStore = useOrderStore();
 
-const totalData = computed(() => orderStore.orders.length);
-const totalBalance = computed(() => orderStore.orders.reduce((sum, item) => sum + item.total, 0));
-const transactions = computed(() => orderStore.orders);
+const transactions = computed(() => orderStore.orders.filter((item) => item.finish_date));
+const totalData = computed(() => transactions.value.length);
+const totalBalance = computed(() => transactions.value.reduce((sum, item) => sum + item.total, 0));
 
 const titleStart = computed(() => getFormattedDateReport(props.reportType, props.reportDate.start));
 const titleEnd = computed(() => getFormattedDateReport(props.reportType, props.reportDate.end));

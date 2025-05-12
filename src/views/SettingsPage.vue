@@ -40,6 +40,8 @@ const refreshProfile = () => {
 };
 
 const logout = async () => {
+  if (!confirm('apakah anda yakin untuk logout?')) return;
+
   await authStore.signOut();
 
   if (!authStore.error) {
@@ -137,7 +139,7 @@ onMounted(async () => {
         <CustomButton @click="disabled = !disabled">Edit Profile</CustomButton>
         <CustomButton styleType="danger" @click="logout">Log Out</CustomButton>
       </template>
-      <div v-else class="flex gap-4">
+      <div v-else class="flex gap-4 mb-12">
         <CustomButton @click="saveProfile" :isLoading="profileStore.update.loading">Simpan Perubahan</CustomButton>
         <CustomButton styleType="danger" @click="cancelSave">Batal</CustomButton>
       </div>

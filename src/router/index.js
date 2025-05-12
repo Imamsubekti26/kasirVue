@@ -18,6 +18,10 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/',
+      redirect: '/dashboard'
+    },
+    {
       path: '/dashboard',
       meta: { requiresAuth: true },
       children: [
@@ -64,10 +68,10 @@ router.beforeEach((to) => {
     Cookies.remove('isLogin');
     Cookies.remove('jwtToken');
     logout();
-    // return { name: 'login' };
+    return { name: 'login' };
   }
   if (!to.meta.requiresAuth && isLoggedIn()) {
-    // return { name: 'dashboard' };
+    return { name: 'dashboard' };
   }
 });
 
