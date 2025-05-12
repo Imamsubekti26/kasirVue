@@ -18,7 +18,7 @@ const changeActiveTab = (tab) => {
 };
 
 const fetchTodayOrders = async () => {
-  await orderStore.fetchTodayOrder(true);
+  await orderStore.fetchOrder(true);
   if (orderStore.get.error) {
     alert(orderStore.get.error);
   }

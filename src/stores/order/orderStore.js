@@ -14,7 +14,7 @@ export const useOrderStore = defineStore('order', () => {
   return {
     orders: computed(() => getOrder.orders),
     orderDetail: computed(() => detailOrder.orderDetail),
-    fetchTodayOrder: getOrder.fetchTodayOrder,
+    fetchOrder: getOrder.fetchOrder,
     fetchDetailOrder: detailOrder.fetchDetailOrder,
     newOrder: createOrder.newOrder,
     editOrder: updateOrder.editOrder,

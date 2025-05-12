@@ -9,7 +9,7 @@ export const useGetOrderStore = defineStore('getOrder', () => {
   const loading = ref(false);
   const error = ref(null);
 
-  const fetchTodayOrder = async (force =false) => {
+  const fetchOrder = async (force =false, startDate = null, endDate = null) => {
     if (loading.value) return;
 
     if (!force && orders.value.length) return; // caching
@@ -25,7 +25,7 @@ export const useGetOrderStore = defineStore('getOrder', () => {
     }
 
     const userId = getUserId(jwtToken);
-    const result = await getOrderHistory(userId);
+    const result = await getOrderHistory(userId, startDate, endDate);
 
     if (result.error) {
       error.value = result.message;
@@ -39,5 +39,5 @@ export const useGetOrderStore = defineStore('getOrder', () => {
     return result;
   };
 
-  return { orders, loading, error, fetchTodayOrder };
+  return { orders, loading, error, fetchOrder };
 });
