@@ -39,7 +39,7 @@ onMounted(async () => {
       </div>
       <div class="rounded-lg px-4 py-3 flex-grow bg-blue-400 text-white dark:text-black">
         <p class="text-xs">total perolehan:</p>
-        <p class="font-semibold">Rp. {{ totalBalance || 0 }}</p>
+        <p class="font-semibold">Rp. {{ totalBalance.toLocaleString('id-ID') || 0 }}</p>
       </div>
     </div>
 

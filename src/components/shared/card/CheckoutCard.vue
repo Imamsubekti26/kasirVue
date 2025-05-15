@@ -21,7 +21,7 @@ defineProps({
             <div class="flex gap-2 items-center">
               <slot />
             </div>
-            <p class="text-sm font-semibold text-left">{{ price }}</p>
+            <p class="text-sm font-semibold text-left">Rp. {{ parseInt(price).toLocaleString('id-ID') }}</p>
           </div>
         </div>
       </div>

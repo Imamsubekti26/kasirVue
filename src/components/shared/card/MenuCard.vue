@@ -15,7 +15,7 @@ defineProps({
         <div class="flex flex-col justify-between h-full w-full">
           <p class="text-base font-medium text-left">{{ product.name }}</p>
           <div class="flex justify-between items-end">
-            <p class="text-xs text-left">{{ product.price }}</p>
+            <p class="text-xs text-left">Rp. {{ product.price.toLocaleString('id-ID') }}</p>
             <div class="flex gap-2 items-center">
               <slot />
             </div>

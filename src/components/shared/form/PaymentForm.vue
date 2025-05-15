@@ -63,6 +63,10 @@ const handleSave = async (isFinish = false) => {
 };
 
 const handleProcess = async () => {
+  if(cashback.value < 0) {
+    alert('Uang pelanggan kurang, tidak bisa meneruskan pembayaran!')
+    return;
+  }
   const orderId = await handleSave(true);
   router.push({ name: 'bill', params: { order_id: orderId } });
 };
@@ -73,7 +77,7 @@ const handleProcess = async () => {
     <div class="w-full bg-white dark:bg-slate-800 border-t-2 border-gray-50 dark:border-gray-800 rounded-3xl py-4 pb-8 px-6">
       <div class="flex justify-between text-sm">
         <p>Total:</p>
-        <p class="font-semibold">Rp. {{ cartStore.grandTotal }}</p>
+        <p class="font-semibold">Rp. {{ cartStore.grandTotal.toLocaleString('id-ID') }}</p>
       </div>
 
       <div v-if="orderStore.create.loading || orderStore.update.loading" class="flex flex-col gap-4 justify-center items-center my-8">
@@ -91,7 +95,7 @@ const handleProcess = async () => {
         </div>
         <div v-if="paymentMethod === 'cash'" class="flex justify-between text-sm">
           <p>Kembalian:</p>
-          <p class="font-semibold">Rp. {{ cashback }}</p>
+          <p class="font-semibold">Rp. {{ cashback.toLocaleString('id-ID') }}</p>
         </div>
       </div>
       <div class="flex gap-4 mb-4">
