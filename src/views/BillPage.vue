@@ -1,12 +1,12 @@
 <script setup>
 import CustomButton from '@/components/shared/button/CustomButton.vue';
-import { timestampToDateString } from '@/lib/helpers/dateFormatter';
 import { useGlobalStore } from '@/stores/globalStore';
 import { useOrderStore } from '@/stores/order/orderStore';
 import { onBeforeMount, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
 const globalStore = useGlobalStore();
 const orderStore = useOrderStore();
 
@@ -21,7 +21,11 @@ const formattedTime = (time) =>
   });
 
 const handleBack = () => {
-  window.history.back();
+  if (globalStore.report.isFromReport) {
+    window.history.back();
+  } else {
+    router.push({name: 'dashboard'})
+  }
 };
 
 const fetchData = async (historyId) => {

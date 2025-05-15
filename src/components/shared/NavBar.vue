@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue';
+import { computed } from 'vue';
 import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
@@ -15,16 +15,11 @@ const menuList = ref([
   {id: 'settings', title: 'Setting', icon: '/icons/ic_setting.svg', iconActive: '/icons/ic_setting_fill.svg'},
 ]);
 
-const activeTab = ref('dashboard');
+const activeTab = computed(()=>route.name);
 
 const changeMenu = (menu, routeName) => {
-  activeTab.value = menu.id;
   router.push({ name: routeName });
 };
-
-onMounted(() => {
-  activeTab.value = route.name;
-})
 </script>
 
 <template>

@@ -63,7 +63,7 @@ const handleSave = async (isFinish = false) => {
 };
 
 const handleProcess = async () => {
-  if(cashback.value < 0) {
+  if(paymentMethod.value === 'cash' && cashback.value < 0) {
     alert('Uang pelanggan kurang, tidak bisa meneruskan pembayaran!')
     return;
   }

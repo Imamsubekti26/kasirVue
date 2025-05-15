@@ -16,6 +16,10 @@ export const useGlobalStore = defineStore('global', () => {
     return f;
   }; // hanya dipanggil di report
 
+  const isFromReport = () => {
+    return fromBillReport.value[1]
+  };
+
   return {
     dashboard: {
       activeTab: dashboardActiveTab
@@ -23,7 +27,8 @@ export const useGlobalStore = defineStore('global', () => {
     report: {
       isReportShown: reportModalIsShown,
       markAsFromBill,
-      isFromBill
+      isFromBill,
+      isFromReport
     }
   };
 });
