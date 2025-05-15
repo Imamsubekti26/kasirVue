@@ -50,7 +50,7 @@ const handleClick = () => {
         <p class="flex-grow-0 flex-shrink-0 text-base text-left">{{ title }}</p>
         <p class="flex-grow-0 flex-shrink-0 text-xs text-left">{{ formattedTime }}</p>
       </div>
-      <p class="flex-grow-0 flex-shrink-0 text-base text-right">{{ price }}</p>
+      <p class="flex-grow-0 flex-shrink-0 text-base text-right">{{ price.toLocaleString('id-ID') }}</p>
     </div>
   </div>
 </template>
