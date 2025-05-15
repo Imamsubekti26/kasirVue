@@ -11,7 +11,7 @@ defineProps({
   <div class="flex flex-col gap-6 mb-6">
     <div class="flex justify-between px-6">
       <div class="flex gap-4 w-full">
-        <img :src="product.image" alt="food" class="object-cover h-20 w-20 rounded-lg" />
+        <img :src="product.image || '/placeholder.webp'" alt="food" class="object-cover h-20 w-20 rounded-lg" />
         <div class="flex flex-col justify-between h-full w-full">
           <p class="text-base font-medium text-left">{{ product.name }}</p>
           <div class="flex justify-between items-end">
